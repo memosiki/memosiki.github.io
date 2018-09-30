@@ -7,6 +7,11 @@ var customLabel = {
     }
 };
 
+$(window).load(function() { 
+  $("#loaderInner").fadeOut(); 
+  $("#loader").delay(400).fadeOut("slow"); 
+});
+
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         center: new google.maps.LatLng(55.75370903771494, 37.61981338262558),
