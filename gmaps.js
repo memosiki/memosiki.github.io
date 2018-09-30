@@ -233,11 +233,61 @@ function initMap() {
     });
     infoWindow = new google.maps.InfoWindow();
 
+
+    var directionsDisplay;
+  
+
+    function calcRoute(myLat, myLng, toLat, toLng, map) {
+
+      var directionsService = new google.maps.DirectionsService();
+    
+      directionsDisplay = new google.maps.DirectionsRenderer();
+
+      var start = new google.maps.LatLng(myLat, myLng);
+      //var end = new google.maps.LatLng(38.334818, -181.884886);
+      var end = new google.maps.LatLng(toLat, toLng);
+      /*
+      var startMarker = new google.maps.Marker({
+                  position: start,
+                  map: map,
+                  draggable: true
+              });
+              var endMarker = new google.maps.Marker({
+                  position: end,
+                  map: map,
+                  draggable: true
+              });
+      */
+        var bounds = new google.maps.LatLngBounds();
+        bounds.extend(start);
+        bounds.extend(end);
+        map.fitBounds(bounds);
+        var request = {
+            origin: start,
+            destination: end,
+            travelMode: google.maps.TravelMode.WALKING
+        };
+        directionsService.route(request, function (response, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+                directionsDisplay.setDirections(response);
+                directionsDisplay.setMap(map);
+                directionsDisplay.setOptions( { suppressMarkers: true } );
+            } else {
+                alert("Directions Request from " + start.toUrlValue(6) + " to " + end.toUrlValue(6) + " failed: " + status);
+            }
+        });
+      }
+
+
     var marker = null;
+    var myPosLat;
+    var myPosLon;
     function autoUpdate() {
         navigator.geolocation.getCurrentPosition(function(position) {
             var newPoint = new google.maps.LatLng(position.coords.latitude,
                 position.coords.longitude);
+            myPosLat = position.coords.latitude;
+            myPosLon = position.coords.longitude;
             console.log(position.coords.latitude,
                 position.coords.longitude);
             var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
@@ -282,15 +332,19 @@ function initMap() {
         Array.prototype.forEach.call(markers, function(markerElem) {
             var id = markerElem.getAttribute('id');
             var name = markerElem.getAttribute('title');
-            var description = 'Расстояние: ' + parseInt(markerElem.getAttribute('distance')) +' метров. \n';            
-            description += markerElem.getAttribute('description');
+            var description = document.createElement('div');
+            description.textContent = 'Расстояние: ' + parseInt(markerElem.getAttribute('distance')) +' метров.';            
+            var text_in = markerElem.getAttribute('description');
             var date_container_b = document.createElement('div');
             var date_b = markerElem.getAttribute('datestart');
             var date_container_e = document.createElement('div');
             var date_e = markerElem.getAttribute('dateend');
             date_container_b.textContent = 'Начало: ' + date_b;
-            date_container_e.textContent = 'Конец: ' + date_e; 
-            $(date_container_b, date_container_e).css("padding-top", "15px");
+            date_container_e.textContent = 'Конец:  ' + date_e; 
+            $(date_container_b).css("padding-top", "15px");
+            $(date_container_e).css("padding-bottom", "15px");
+            var point_lat = parseFloat(markerElem.getAttribute('lat'));
+            var point_lon = parseFloat(markerElem.getAttribute('lon'));
             var point = new google.maps.LatLng(
                 parseFloat(markerElem.getAttribute('lat')),
                 parseFloat(markerElem.getAttribute('lon')));
@@ -301,10 +355,11 @@ function initMap() {
             infowincontent.appendChild(strong);
             infowincontent.appendChild(date_container_b);
             infowincontent.appendChild(date_container_e);
+            infowincontent.appendChild(description);
             infowincontent.appendChild(document.createElement('br'));
 
             var text = document.createElement('text');
-            text.textContent = description;
+            text.textContent = text_in;
             
             infowincontent.appendChild(text);
             var icon = {};
@@ -316,8 +371,16 @@ function initMap() {
             });
             $(infowincontent).addClass('pop_up_event');
             marker.addListener('click', function() {
+                console.log(directionsDisplay);
+                if(directionsDisplay !== undefined) {
+                  directionsDisplay.setDirections({routes: []});
+                }
+                
                 infoWindow.setContent(infowincontent);
                 infoWindow.open(map, marker);
+
+                calcRoute(myPosLat, myPosLon, point_lat, point_lon, map);
+
             });
         });
     });
@@ -344,3 +407,4 @@ function downloadUrl(url, callback) {
 
 
 function doNothing() {}
+
