@@ -272,6 +272,9 @@ function initMap() {
                 directionsDisplay.setDirections(response);
                 directionsDisplay.setMap(map);
                 directionsDisplay.setOptions( { suppressMarkers: true } );
+                var distance = google.maps
+                .geometry.spherical.computeDistanceBetween(start, end);
+                console.log( Math.round(distance / 1000) + "Km" );
             } else {
                 alert("Directions Request from " + start.toUrlValue(6) + " to " + end.toUrlValue(6) + " failed: " + status);
             }
