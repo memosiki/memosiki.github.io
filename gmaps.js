@@ -13,7 +13,6 @@ function initMap() {
         zoom: 15,
         disableDefaultUI: true,
         fullscreenControl: true,
-        mapTypeId: 'terrain',
         styles: [
             
           {
@@ -232,7 +231,7 @@ function initMap() {
 
         ]
     });
-    infoWindow = new google.maps.InfoWindow;
+    infoWindow = new google.maps.InfoWindow();
 
     var marker = null;
     function autoUpdate() {
@@ -277,7 +276,7 @@ function initMap() {
 
     autoUpdate();
     // Change this depending on the name of your PHP or XML file
-    downloadUrl('https://b489e349.ngrok.io/execute?lat='+55.8104315+'&lon='+37.4981706, function(data) {
+    downloadUrl('https://00dc24ff.ngrok.io/execute?lat='+55.8104315+'&lon='+37.4981706, function(data) {
         var xml = data.responseXML;
         var markers = xml.documentElement.getElementsByTagName('marker');
         Array.prototype.forEach.call(markers, function(markerElem) {
@@ -285,6 +284,13 @@ function initMap() {
             var name = markerElem.getAttribute('title');
             var description = 'Расстояние: ' + parseInt(markerElem.getAttribute('distance')) +' метров. \n';            
             description += markerElem.getAttribute('description');
+            var date_container_b = document.createElement('div');
+            var date_b = markerElem.getAttribute('datestart');
+            var date_container_e = document.createElement('div');
+            var date_e = markerElem.getAttribute('dateend');
+            date_container_b.textContent = 'Начало: ' + date_b;
+            date_container_e.textContent = 'Конец: ' + date_e; 
+            $(date_container_b, date_container_e).css("padding-top", "15px");
             var point = new google.maps.LatLng(
                 parseFloat(markerElem.getAttribute('lat')),
                 parseFloat(markerElem.getAttribute('lon')));
@@ -293,6 +299,8 @@ function initMap() {
             var strong = document.createElement('strong');
             strong.textContent = name
             infowincontent.appendChild(strong);
+            infowincontent.appendChild(date_container_b);
+            infowincontent.appendChild(date_container_e);
             infowincontent.appendChild(document.createElement('br'));
 
             var text = document.createElement('text');
