@@ -241,7 +241,14 @@ function initMap() {
 
       var directionsService = new google.maps.DirectionsService();
     
-      directionsDisplay = new google.maps.DirectionsRenderer();
+      directionsDisplay = new google.maps.DirectionsRenderer({
+    polylineOptions: {
+      strokeColor: "blue",
+      geodesic: true,
+      strokeOpacity: 0.4,
+      strokeWeight: 3   
+    }
+  });
 
       var start = new google.maps.LatLng(myLat, myLng);
       //var end = new google.maps.LatLng(38.334818, -181.884886);
@@ -274,7 +281,8 @@ function initMap() {
                 directionsDisplay.setOptions( { suppressMarkers: true } );
                 var distance = google.maps
                 .geometry.spherical.computeDistanceBetween(start, end);
-                console.log( Math.round(distance / 1000) + "Km" );
+                //console.log( Math.round(distance) + "Km" );
+                $('.distance').text("Расстояние: " + Math.round(distance)/1000 + " Км");
             } else {
                 alert("Directions Request from " + start.toUrlValue(6) + " to " + end.toUrlValue(6) + " failed: " + status);
             }
@@ -359,6 +367,7 @@ function initMap() {
             infowincontent.appendChild(date_container_b);
             infowincontent.appendChild(date_container_e);
             infowincontent.appendChild(description);
+            $(description).addClass('distance');
             infowincontent.appendChild(document.createElement('br'));
 
             var text = document.createElement('text');
@@ -374,7 +383,7 @@ function initMap() {
             });
             $(infowincontent).addClass('pop_up_event');
             marker.addListener('click', function() {
-                console.log(directionsDisplay);
+                //console.log(directionsDisplay);
                 if(directionsDisplay !== undefined) {
                   directionsDisplay.setDirections({routes: []});
                 }

@@ -1,4 +1,10 @@
-.pop_up_event{
-
+.logo{
+	border-radius: 3px;
+	position: fixed;
+	top: 10px;
+	right: 65px;
+	background: url(https://fakeimg.pl/200x40/);
+	width: 200px;
+	height: 40px;
 }
 
