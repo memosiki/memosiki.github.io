@@ -349,7 +349,7 @@ function initMap() {
             var id = markerElem.getAttribute('id');
             var name = markerElem.getAttribute('title');
             var description = document.createElement('div');
-            description.textContent = 'Расстояние: ' + parseInt(markerElem.getAttribute('distance')) +' метров.';            
+            description.textContent = 'Расстояние: 0 метров.';            
             var text_in = markerElem.getAttribute('description');
             var date_container_b = document.createElement('div');
             var date_b = markerElem.getAttribute('datestart');
