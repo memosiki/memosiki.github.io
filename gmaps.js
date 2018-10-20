@@ -342,7 +342,7 @@ function initMap() {
 
     autoUpdate();
     // Change this depending on the name of your PHP or XML file
-    downloadUrl('https://00dc24ff.ngrok.io/execute?lat='+55.8104315+'&lon='+37.4981706, function(data) {
+    downloadUrl('https://ca9a236a.ngrok.io/execute?lat='+55.8104315+'&lon='+37.4981706, function(data) {
         var xml = data.responseXML;
         var markers = xml.documentElement.getElementsByTagName('marker');
         Array.prototype.forEach.call(markers, function(markerElem) {
