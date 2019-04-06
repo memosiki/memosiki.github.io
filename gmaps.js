@@ -350,9 +350,14 @@ function initMap() {
     lat_to = 55.75370903771494;
     lon_to = 37.61981338262558;
     fligthPath = [{ // Залетим в магазин по пути
-        lat: 55.7904,
-        lng: 37.5313
-    }]
+            lat: 55.7904,
+            lng: 37.5313
+        },
+        {
+            lat: 55.7854,
+            lng: 37.5313
+        }
+    ]
     calcRoute(lat_from, lon_from, lat_to, lon_to, map, onAir = true, flightPlanCoordinates = fligthPath);
 
     // Change this depending on the name of your PHP or XML file
