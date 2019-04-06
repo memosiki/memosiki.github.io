@@ -1,6 +1,29 @@
 # memosiki.github.io
-Site for participation in URBAN HACK event.
-http://urbanhack.ru/
 
-Online tool to search and navigate through events near you.
-Currently down due to non-operating server.
+Сайт для участия в хакатоне АВИАХАКАТОН.
+https://mai.ru/aviahackathon/
+
+Карта с маршрутами полётов беспилотных летательных аппаратов и дронов.
+В текущий момент в разработке.
+
+Место для обращения к API в файле gmaps.js
+
+'''
+// Место для обращения к Api
+calcRoute(lat_from, lon_from, lat_to, lon_to, map, onAir = true, flightPlanCoordinates = fligthPath);
+'''
+
+Рисует маршрут доставки на карте. Берет маршрут по дорогам у гугла.
+Для летательных аппаратов необходимо задавать флаг onAir и по желанию указывать маршрут.
+Если не указан строит прямую линию от начальной до конца.
+
+Путь задается в формате:
+
+'''
+var flightPlanCoordinates = [
+  {lat: 37.772, lng: -122.214},
+  {lat: 21.291, lng: -157.821},
+  {lat: -18.142, lng: 178.431},
+  {lat: -27.467, lng: 153.027}
+];
+'''

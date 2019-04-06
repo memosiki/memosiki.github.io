@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <title>AV</title>
+
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script type="text/javascript" src="scripts.js">    </script>
+</head>
+
+<body>
+    <span id="toggle">
+        <a onclick="toggle('kaf')" href="#">Заголовок</a>
+    </span>
+
+    <table id="kaf" style="display:none">
+        <tr>
+            <td>Скрытый текст</td>
+        </tr>
+    </table>
+</body>
+<script type="text/javascript">
+    console.log('a');
+    var response = $.getJSON("https://api.thecatapi.com/v1/images/search",
+        function(data) {
+            console.log("Data retrived:")
+            console.log(data)
+            $.each(data, function(key, value) {
+                console.log(value['url'])
+            });
+
+            $("<div/>", {
+                "class": "item",
+                html: items.join("")
+            }).appendTo("body");
+        });
+</script>
+
+</html>
