@@ -359,72 +359,22 @@ function initMap() {
         }
     ]
     calcRoute(lat_from, lon_from, lat_to, lon_to, map, onAir = true, flightPlanCoordinates = fligthPath);
-
-    // Change this depending on the name of your PHP or XML file
-    /*
-    downloadUrl('https://ca9a236a.ngrok.io/execute?lat='+55.8104315+'&lon='+37.4981706, function(data) {
-        var xml = data.responseXML;
-        var markers = xml.documentElement.getElementsByTagName('marker');
-        Array.prototype.forEach.call(markers, function(markerElem) {
-            var id = markerElem.getAttribute('id');
-            var name = markerElem.getAttribute('title');
-            var description = document.createElement('div');
-            description.textContent = 'Расстояние: 0 метров.';
-            var text_in = markerElem.getAttribute('description');
-            var date_container_b = document.createElement('div');
-            var date_b = markerElem.getAttribute('datestart');
-            var date_container_e = document.createElement('div');
-            var date_e = markerElem.getAttribute('dateend');
-            date_container_b.textContent = 'Начало: ' + date_b;
-            date_container_e.textContent = 'Конец:  ' + date_e;
-            $(date_container_b).css("padding-top", "15px");
-            $(date_container_e).css("padding-bottom", "15px");
-            var point_lat = parseFloat(markerElem.getAttribute('lat'));
-            var point_lon = parseFloat(markerElem.getAttribute('lon'));
-            var point = new google.maps.LatLng(
-                parseFloat(markerElem.getAttribute('lat')),
-                parseFloat(markerElem.getAttribute('lon')));
-
-            var infowincontent = document.createElement('div');
-            var strong = document.createElement('strong');
-            strong.textContent = name
-            infowincontent.appendChild(strong);
-            infowincontent.appendChild(date_container_b);
-            infowincontent.appendChild(date_container_e);
-            infowincontent.appendChild(description);
-            $(description).addClass('distance');
-            infowincontent.appendChild(document.createElement('br'));
-
-            var text = document.createElement('text');
-            text.textContent = text_in;
-
-            infowincontent.appendChild(text);
-            var icon = {};
-            var marker = new google.maps.Marker({
-                map: map,
-                position: point,
-                label: icon.label,
-                icon: "location_user.png"
-            });
-            $(infowincontent).addClass('pop_up_event');
-            marker.addListener('click', function() {
-                //console.log(directionsDisplay);
-                if(directionsDisplay !== undefined) {
-                  directionsDisplay.setDirections({routes: []});
-                }
-
-                infoWindow.setContent(infowincontent);
-                infoWindow.open(map, marker);
-
-                calcRoute(myPosLat, myPosLon, point_lat, point_lon, map);
-
-            });
-        });
+    var marker = null;
+    google.maps.event.addListener(map, 'click', function(event) {
+        // очичстить список предудущих пунктов
+        //fligthPath = []
+        calcRoute(event.latLng.lat(), event.latLng.lng(), lat_to, lon_to, map, onAir = true, flightPlanCoordinates = fligthPath);
     });
-*/
 }
 
 
+
+function placeMarker(location) {
+    var marker = new google.maps.Marker({
+        position: location,
+        map: map
+    });
+}
 
 
 function downloadUrl(url, callback) {
